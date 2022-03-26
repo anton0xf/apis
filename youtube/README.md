@@ -1,5 +1,7 @@
-[YouTube API Getting Started](https://developers.google.com/youtube/v3/getting-started)
-[Playlists/list](https://developers.google.com/youtube/v3/docs/playlists/list)
+* [YouTube API Getting Started](https://developers.google.com/youtube/v3/getting-started)
+* [Playlists/list](https://developers.google.com/youtube/v3/docs/playlists/list)
+
+Get youtube api key and save it into .api-key here or set in YOUTUBE_API_KEY environment variable.
 
 ```sh
 # get playlist as tsv file, e.g. PLnbH8YQPwKbnofSQkZE05PKzPXzbDCVXv
