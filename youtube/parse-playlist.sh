@@ -3,7 +3,7 @@
 PL_ID="$1"
 
 RESOURCE='https://www.googleapis.com/youtube/v3/playlistItems'
-# TODO get it from file or env
+# get it from file or env
 API_KEY="${YOUTUBE_API_KEY:-$(cat .api-key)}"
 BASE_REQUEST="${RESOURCE}?key=${API_KEY}&playlistId=${PL_ID}"
 BASE_REQUEST="${BASE_REQUEST}&part=id,snippet&maxResults=50"
