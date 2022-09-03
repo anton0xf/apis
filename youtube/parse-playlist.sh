@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# get playlist content and print it as tsv: [videoId, title]
 PL_ID="$1"
 
 RESOURCE='https://www.googleapis.com/youtube/v3/playlistItems'
