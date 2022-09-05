@@ -22,16 +22,18 @@
       (slurp ".api-key")))
 
 (defn get-playlist-items-page [id page-token]
-  (try (-> playlist-items-base-url
-           (curl/get
-            {:query-params
-             {"key" (get-api-key)
-              "playlistId" id
-              "part" "id,snippet"
-              "maxResults" 50
-              "pageToken" page-token}})
-           :body
-           (json/parse-string true))
+  (try (let [res (curl/get playlist-items-base-url
+                           {:debug true
+                            :query-params
+                            {"key" (get-api-key)
+                             "playlistId" id
+                             "part" "id,snippet"
+                             "maxResults" 50
+                             "pageToken" page-token}})]
+         (stderr (println "request:" (:command res)))
+         (-> res
+             :body
+             (json/parse-string true)))
        (catch Exception ex
          (stderr (println (ex-message ex))
                  (pprint (-> (ex-data ex)
