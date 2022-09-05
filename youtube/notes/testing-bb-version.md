@@ -10,4 +10,7 @@ next page token: null
 Then check new implementation
 ```sh
 $ diff out/savv-alg.tsv <(./parse_playlist.clj "PLlx2izuC9gji7vdEkiEwIs7IHKY_64Ed2")
+playlist id: PLlx2izuC9gji7vdEkiEwIs7IHKY_64Ed2
+next page token: EAAaBlBUOkNESQ
+next page token: nil
 ```

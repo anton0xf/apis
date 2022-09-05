@@ -21,14 +21,15 @@
   (or (System/getenv "YOUTUBE_API_KEY")
       (slurp ".api-key")))
 
-(defn get-playlist-items-page [id]
+(defn get-playlist-items-page [id page-token]
   (try (-> playlist-items-base-url
            (curl/get
             {:query-params
              {"key" (get-api-key)
               "playlistId" id
               "part" "id,snippet"
-              "maxResults" 50}})
+              "maxResults" 50
+              "pageToken" page-token}})
            :body
            (json/parse-string true))
        (catch Exception ex
@@ -43,13 +44,17 @@
    :video-id (-> snippet :resourceId :videoId)})
 
 (defn get-playlist-items [id]
-  (let [page (get-playlist-items-page id)
-        next-page-token (:nextPageToken page)
-        items (:items page)
-        snippets (map :snippet items)
-        res (map get-video-info snippets)]
-    (stderr (println "next page token:" next-page-token))
-    res))
+  (loop [res nil next nil]
+    (let [page (get-playlist-items-page id next)
+          next-page-token (:nextPageToken page)
+          items (:items page)
+          snippets (map :snippet items)
+          page-res (map get-video-info snippets)
+          res (concat res page-res)]
+      (stderr (println "next page token:" next-page-token))
+      (if next-page-token
+        (recur res next-page-token)
+        res))))
 
 (defn playlist-to-tsv [id]
   (stderr (println "playlist id:" id))
