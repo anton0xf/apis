@@ -6,20 +6,22 @@
             [babashka.curl :as curl]
             [cheshire.core :as json]))
 
-(defn run-interactively? []
-  ;; https://github.com/babashka/babashka/blob/master/examples/htmx_todoapp.clj#L235
-  (= *file* (System/getProperty "babashka.file")))
-
-(def playlist-items-base-url
-  "https://www.googleapis.com/youtube/v3/playlistItems")
-
-(defn script-name []
-  (.getName (io/file *file*)))
-
+;; TODO: extract to util
 (defmacro stderr [& body]
   `(binding [*out* *err*]
      ~@body
      (flush)))
+
+(defn run-interactively? []
+  ;; https://github.com/babashka/babashka/blob/master/examples/htmx_todoapp.clj#L235
+  (= *file* (System/getProperty "babashka.file")))
+
+(defn script-name []
+  (.getName (io/file *file*)))
+
+;; task specific code
+(def playlist-items-base-url
+  "https://www.googleapis.com/youtube/v3/playlistItems")
 
 (defn get-api-key []
   (or (System/getenv "YOUTUBE_API_KEY")
