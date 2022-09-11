@@ -6,6 +6,10 @@
             [babashka.curl :as curl]
             [cheshire.core :as json]))
 
+(defn run-interactively? []
+  ;; https://github.com/babashka/babashka/blob/master/examples/htmx_todoapp.clj#L235
+  (= *file* (System/getProperty "babashka.file")))
+
 (def playlist-items-base-url
   "https://www.googleapis.com/youtube/v3/playlistItems")
 
@@ -64,8 +68,7 @@
     (printf "%s\t%s\n" (:video-id item) (:title item)))
   (flush))
 
-;; https://github.com/babashka/babashka/blob/master/examples/htmx_todoapp.clj#L235
-(when (= *file* (System/getProperty "babashka.file"))
+(when (run-interactively?)
   (if-let [playlist-id (first *command-line-args*)]
     (playlist-to-tsv playlist-id)
     (do (stderr (printf "Usage: ./%s playlist_id%n" (script-name)))
