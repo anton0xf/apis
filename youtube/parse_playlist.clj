@@ -6,6 +6,11 @@
             [babashka.curl :as curl]
             [cheshire.core :as json]))
 
+;; to develop with CIDER nREPL see https://docs.cider.mx/cider/platforms/babashka.html
+;; $ bb nrepl-server
+;; > Started nREPL server at 127.0.0.1:1667
+;; Then type C-c C-x c j (M-x cider-connect-clj) 127.0.0.1 RET 1667 RET
+
 ;; TODO: extract to util
 (defmacro stderr [& body]
   `(binding [*out* *err*]
