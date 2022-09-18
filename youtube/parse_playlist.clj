@@ -1,6 +1,7 @@
 #!/usr/bin/env bb
 (ns script
-  (:require [a0xf.apis.youtube.common :refer :all]
+  (:require [a0xf.apis.youtube.common
+             :refer [stderr run-interactively? script-name get-paginated-list]]
             ;; https://github.com/babashka/babashka/blob/master/examples/httpkit_server.clj#L2
             [clojure.pprint :refer [pprint]]
             [babashka.curl :as curl]
