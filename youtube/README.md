@@ -5,7 +5,7 @@ Get youtube api key and save it into .api-key here or set in YOUTUBE_API_KEY env
 
 ```sh
 # get playlist as tsv file, e.g. PLnbH8YQPwKbnofSQkZE05PKzPXzbDCVXv
-$ ./parse-playlist.sh "$PLAYLIST_ID" > playlist.tsv
+$ ./playlist-to-tsv.sh "$PLAYLIST_ID" > out/playlist.tsv
 # convert to list of Markdown links
-<playlist.tsv awk -F'\t' '{print "watch [" $2 "](https://www.youtube.com/watch?v=" $1 ")"}'
+<out/playlist.tsv awk -F'\t' '{print "watch [" $2 "](https://www.youtube.com/watch?v=" $1 ")"}'
 ```
