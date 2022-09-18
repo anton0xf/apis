@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 (ns script
-  (:require [clojure.java.io :as io]
+  (:require [a0xf.apis.youtube.common :refer :all]
             ;; https://github.com/babashka/babashka/blob/master/examples/httpkit_server.clj#L2
             [clojure.pprint :refer [pprint]]
             [babashka.curl :as curl]
@@ -10,37 +10,6 @@
 ;; $ bb nrepl-server
 ;; > Started nREPL server at 127.0.0.1:1667
 ;; Then type C-c C-x c j (M-x cider-connect-clj) 127.0.0.1 RET 1667 RET
-
-;; TODO: extract to util
-(defmacro stderr [& body]
-  `(binding [*out* *err*]
-     ~@body
-     (flush)))
-
-(defn run-interactively? []
-  ;; https://github.com/babashka/babashka/blob/master/examples/htmx_todoapp.clj#L235
-  (= *file* (System/getProperty "babashka.file")))
-
-(defn script-name []
-  (.getName (io/file *file*)))
-
-(defn get-paginated-list
-  "helper to get token-based paginated list"
-  [init-token     ;; token of first page, nil for example
-   get-page-fn    ;; token -> page
-   get-token-fn   ;; page -> token (of next page or nil on last page)
-   get-content-fn ;; page -> list[item]
-   ]
-  (loop [acc nil
-         token init-token]
-    (let [page (get-page-fn token)
-          next-token (get-token-fn page)
-          content (get-content-fn page)
-          new-acc (concat acc content)]
-      (stderr (println "next page token:" next-token))
-      (if next-token
-        (recur new-acc next-token)
-        new-acc))))
 
 ;; task specific code
 (def playlist-items-base-url
