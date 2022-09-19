@@ -10,7 +10,6 @@
 ;; > Started nREPL server at 127.0.0.1:1667
 ;; Then type C-c C-x c j (M-x cider-connect-clj) 127.0.0.1 RET 1667 RET
 
-;; task specific code
 (def playlist-items-base-url
   "https://www.googleapis.com/youtube/v3/playlistItems")
 
