@@ -1,0 +1,2 @@
+#!/usr/bin/env bb
+(require '[babashka.http-client :as http])
