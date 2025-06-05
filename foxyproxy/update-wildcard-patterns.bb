@@ -17,6 +17,16 @@
       (conj "^https?://(.*)\\.")
       str/join))
 
+(defn convert-wildcard-patterns [es]
+  (letfn [(convert [e]
+            (-> e
+                (assoc :type "regex")
+                (update :pattern convert-wildcard-pattern)))
+          (convert? [e]
+            (and (= "wildcard" (:type e))
+                 (str/starts-with? (:pattern e) wildcard-prefix)))]
+    (map #(if (convert? %) (convert %) %) es)))
+
 (comment
   (def data (parse-file "/home/anton0xf/Downloads/FoxyProxy/FoxyProxy_2025-05-08(1).json"))
 
@@ -37,13 +47,16 @@
        (filter (comp #(= % "wildcard") :type))
        first)
   ;; => {:type "wildcard", :title "telegram", :pattern "*://*.telegram.org/", :active true}
+  (->> data :data first :include
+       (filter (comp #(= % "wildcard") :type))
+       (filter (complement #(str/starts-with? (:pattern %) wildcard-prefix))))
 
   (str/starts-with? "*://*.telegram.org/" "*://*.")
   (str/replace-first "*://*.telegram.org/" "*://*." "^https?://(.*)\\.")
   (-> "*://*.telegram.org/"
       (.substring (.length wildcard-prefix))
       (str/replace "." "\\.")
-      list (conj "^https?://(.*)\\.") str/join)    ;; => "^https?://(.*)\\.telegram\\.org/"
+      list (conj "^https?://(.*)\\.") str/join) ;; => "^https?://(.*)\\.telegram\\.org/"
   (convert-wildcard-pattern "*://*.telegram.org/") ;; => "^https?://(.*)\\.telegram\\.org/"
   )
 
